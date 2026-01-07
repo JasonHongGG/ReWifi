@@ -14,11 +14,6 @@
 - 若斷線或探針失敗，會 `netsh wlan connect name=<SSID>` 重連。
 - 會把「最後一次確認可上網的 SSID」寫進 `rewifi_state.json`，避免重開後不知道要連哪個。
 
-## 需求
-- Windows 10/11
-- 已經連過該 Wi‑Fi，Windows 裡存在對應的 Wi‑Fi Profile
-- Python 3.10+（通常 3.8+ 也可）
-
 ## 直接執行
 在本資料夾開 PowerShell 或 CMD：
 
@@ -64,8 +59,3 @@ python rewifi.py --probe-mode http --interval 10
    - Start in：`C:\Users\JasonHong\Desktop\CODE\_Project\ReWifi`
 5. **Conditions**：可勾選「Start the task only if the computer is on AC power」依你需求
 
-> 如果排程器找不到 `python`，可以把 Program/script 改成你的 Python 完整路徑（例如：`C:\Users\<you>\AppData\Local\Programs\Python\Python312\python.exe`）。
-
-## 注意事項
-- `netsh wlan connect name=...` 連的是「Profile 名稱」，通常等於 SSID；如果你的 profile 名稱不同，需要調整（可再跟我說你 `netsh wlan show profiles` 的輸出）。
-- 公司/學校網路若需要瀏覽器登入（Captive Portal），ping 可能成功/失敗表現會不一致，此時可改用不同 probes 或改成 HTTP 檢測（需要我也可以幫你改）。
