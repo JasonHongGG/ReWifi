@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import sys
 from pathlib import Path
 
 from .logging_utils import log
@@ -11,6 +13,23 @@ from .watchdog import ReWifiWatchdog
 
 
 DEFAULT_STATE_FILE = Path(__file__).resolve().parent.parent / "rewifi_state.json"
+
+
+def _default_state_file() -> Path:
+    """Pick a writable state file location.
+
+    - Source run: keep storing next to the repo (rewifi_state.json).
+        - Frozen exe (PyInstaller): store under %LOCALAPPDATA%\\ReWifi\\rewifi_state.json
+      to avoid writing into the temp extraction folder.
+    """
+
+    if getattr(sys, "frozen", False):
+        base = os.environ.get("LOCALAPPDATA") or os.environ.get("APPDATA")
+        if base:
+            return Path(base) / "ReWifi" / "rewifi_state.json"
+        return Path.home() / "ReWifi" / "rewifi_state.json"
+
+    return DEFAULT_STATE_FILE
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
@@ -58,7 +77,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     )
     ap.add_argument(
         "--state-file",
-        default=str(DEFAULT_STATE_FILE),
+        default=str(_default_state_file()),
         help="Path to JSON state file (stores last known-good SSID)",
     )
     return ap

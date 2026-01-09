@@ -19,6 +19,7 @@ class JsonStateStore:
             return {}
 
     def save(self, state: dict) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
     def set_last_good_ssid(self, ssid: str) -> None:

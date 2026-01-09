@@ -59,3 +59,31 @@ python rewifi.py --probe-mode http --interval 10
    - Start in：`C:\Users\JasonHong\Desktop\CODE\_Project\ReWifi`
 5. **Conditions**：可勾選「Start the task only if the computer is on AC power」依你需求
 
+## 打包成 EXE（Windows）
+
+本專案可用 PyInstaller 打成單一檔案 `ReWifi.exe`（Console 程式）。
+
+### 1) 建置
+
+在專案根目錄開 PowerShell：
+
+```powershell
+python -m venv .venv
+pip install -r requirements-dev.txt
+PyInstaller --noconfirm --clean --onefile --console --name ReWifi --distpath dist --workpath build --specpath . rewifi.py
+
+```
+
+產物會在：`dist\ReWifi.exe`
+
+### 2) 執行
+
+```powershell
+.\dist\ReWifi.exe --interval 10 --disconnect-first
+```
+
+### 3) state 檔位置
+
+- 以原始碼執行（`python rewifi.py`）：預設使用專案根目錄的 `rewifi_state.json`
+- 以 EXE 執行：預設寫到 `%LOCALAPPDATA%\ReWifi\rewifi_state.json`（避免寫到 PyInstaller 暫存解壓資料夾）
+
